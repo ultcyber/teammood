@@ -1,0 +1,14 @@
+- simple view
+
+- email template and generation
+- email bulk send
+
+- token generation and connection to db table mood
+- token validation on mood send
+
+- mood sending and connection to db table mood
+- validating if uid already exists
+- adding a comment
+
+- team db table
+- team stats

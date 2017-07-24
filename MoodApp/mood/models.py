@@ -6,6 +6,7 @@ class Mood(models.Model):
     date_requested = models.DateField
     answered = models.BooleanField
     team = models.ForeignKey('Team', on_delete=models.CASCADE)
+    comment = models.CharField(max_length=200)
 
 class Team(models.Model):
     # ......
