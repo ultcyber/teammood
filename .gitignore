@@ -1,2 +1,4 @@
 settings.py
 /django-fork
+*.pyc
+*.db
