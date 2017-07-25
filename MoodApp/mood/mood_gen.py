@@ -1,6 +1,6 @@
 from .utils.token_generator import Token
 from mood.models import Mood, Team
-from datetime import datetime
+import datetime
 from django.core.exceptions import ObjectDoesNotExist
 
 class MoodGen():
@@ -9,13 +9,14 @@ class MoodGen():
 
     Will generate a defined number of tokens and creates moods for current date.
     """
-    def __init__(self, number_of_tokens, commit=True):
+    def __init__(self, number_of_tokens, team, commit=True):
         """
         Generates a new MoodGen object
 
         Args:
             number_of_tokens (int): Number of tokens that will be generated and commited to the database
             commit (bool): whether to commit new tokens to the database. Defaults to True.
+            team (obj): The Team to which the tokens should be assigned
         """
         # Internal fields
         self.result = ""
@@ -24,6 +25,7 @@ class MoodGen():
         self.commit = commit
         self.number_of_tokens = number_of_tokens
         self.token_list = []
+        self.team = team
 
         # Processing moods
         self.__genTokens()
@@ -45,7 +47,8 @@ class MoodGen():
             except ObjectDoesNotExist:
                 if self.commit:
                     try:
-                        Mood(uid=tk, date_requested=datetime.now(), answered=false, team=Team(), comment="")
+                        mood = Mood.objects.create(uid=tk, team=self.team, comment="")
+                        mood.save()
                     except:
                         self.exception_list.append("Error while creating a new mood object. Object uid {}".format(tk))
 
