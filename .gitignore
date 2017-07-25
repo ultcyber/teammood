@@ -1,5 +1,5 @@
 settings.py
-/django-fork
+django-fork/
 *.pyc
 *.db
-/migrations
+migrations/
