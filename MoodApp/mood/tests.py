@@ -1,7 +1,10 @@
 from django.test import TransactionTestCase
 from mood.models import Mood, Team
 from mood.mood_gen import MoodGen
+from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
+import datetime
+
 import traceback
 
 class MoodGenTests(TransactionTestCase):
@@ -28,3 +31,27 @@ class MoodGenTests(TransactionTestCase):
                 failed_queries.append(token)
 
         self.assertEqual(len(failed_queries), 0)
+
+
+    def test_generated_mood_has_right_default_values(self):
+        moods = MoodGen(1, self.test_team)
+        tokens = moods.get_token_list()
+        token = tokens[0]
+
+        try :
+            mood = Mood.objects.get(uid=token)
+        except ObjectDoesNotExist:
+            traceback.print_exc()
+
+
+        results = [
+                mood.date_requested.month == timezone.datetime.now().month,
+                mood.date_requested.day == timezone.datetime.now().day,
+                mood.date_requested.year == timezone.datetime.now().year,
+                mood.answered == False,
+                ]
+
+        self.assertNotIn(False,results,msg="Wrong default values for one of the fields")
+
+
+
