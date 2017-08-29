@@ -1,7 +1,9 @@
 from django.test import TransactionTestCase
+from django.test import TestCase
 from mood.models import Mood, Team
 from mood.mood_gen import MoodGen
 from django.utils import timezone
+from django.test import Client
 from django.core.exceptions import ObjectDoesNotExist
 import datetime
 
@@ -53,5 +55,11 @@ class MoodGenTests(TransactionTestCase):
 
         self.assertNotIn(False,results,msg="Wrong default values for one of the fields")
 
+class ViewsTests(TestCase):
+
+    def test_I_get_404_when_trying_to_open_inexisting_token(self):
+        client = Client()
+        response = client.get("/mood/12345678901234567890123456789012")
+        self.assertEqual(response.status_code, 404)
 
 
